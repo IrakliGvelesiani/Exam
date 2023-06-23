@@ -5,29 +5,35 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
-    lateinit var number: EditText
-    lateinit var message: EditText
-    lateinit var btnSend: Button
+
+    private lateinit var enterEmailEditText : EditText
+    private lateinit var okayButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        init()
+        listeners()
+    }
 
-        number = findViewById(R.id.number)
-        message = findViewById(R.id.message)
-        btnSend = findViewById(R.id.btnSend)
-
-        btnSend.setOnClickListener {
-
-            val bundle = Bundle()
-            bundle.putString("id", number.text.toString())
-            bundle.putString("message", message.text.toString())
-
-            val intent = Intent(this, MainActivity2::class.java)
-            intent.putExtras(bundle)
-            startActivity(intent)
+    private fun listeners() {
+        okayButton.setOnClickListener {
+            Toast.makeText(this, "you clicked!", Toast.LENGTH_SHORT).show()
         }
+        okayButton.setOnLongClickListener {
+            val email = enterEmailEditText.text.toString()
+            val intent = Intent(this@MainActivity, MainActivity2::class.java)
+            intent.putExtra("EMAIL",email)
+            startActivity(intent)
+            true
+        }
+    }
+
+    private fun init(){
+        enterEmailEditText = findViewById(R.id.enterEmailEditText)
+        okayButton = findViewById(R.id.okayButton)
     }
 }
